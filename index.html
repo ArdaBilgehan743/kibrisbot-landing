@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>KıbrısBot — İşletmeniz için WhatsApp Botu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --page-bg: linear-gradient(180deg, #061417 0%, #0a1f23 50%, #0c2a2f 100%);
+  --fg: #ffffff;
+  --fg-muted: rgba(255,255,255,0.6);
+  --fg-faint: rgba(255,255,255,0.35);
+  --accent: #25c484;
+  --accent-text: #06191d;
+  --accent-soft: rgba(37,196,132,0.15);
+  --accent-border: rgba(37,196,132,0.3);
+  --accent-chip: #6ee7b7;
+  --frame: #0b2429;
+  --panel: #0a1d21;
+  --sidebar: #081a1e;
+  --card: #0d2428;
+  --border: rgba(255,255,255,0.08);
+  --border-strong: rgba(255,255,255,0.14);
+  --pill-bg: rgba(255,255,255,0.04);
+  --header-bg: rgba(7,24,29,0.9);
+  --vignette: radial-gradient(ellipse 60% 45% at 20% 0%, rgba(37,196,132,0.12), transparent 60%);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--frame);
+  background: linear-gradient(180deg, #061417 0%, #0a1f23 50%, #0c2a2f 100%);
+  color: var(--fg);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ── TEXTURES ────────────────────────────────────────── */
+.tx-graph {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ── ANIMATIONS ─────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.ani-up     { animation: fadeUp 0.65s cubic-bezier(.2,.7,.2,1) both; }
+.ani-fade   { animation: fadeIn 0.5s ease both; }
+.d100 { animation-delay: 0.10s; }
+.d200 { animation-delay: 0.20s; }
+.d300 { animation-delay: 0.30s; }
+.d500 { animation-delay: 0.50s; }
+.d700 { animation-delay: 0.70s; }
+
+/* ── HEADER ─────────────────────────────────────────── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  transition: background 0.3s, border-color 0.3s, backdrop-filter 0.3s;
+  border-bottom: 1px solid transparent;
+}
+.site-header.scrolled {
+  background: var(--header-bg);
+  border-bottom-color: var(--border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.header-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  padding: 0 20px;
+}
+
+.wordmark {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  user-select: none;
+}
+.logo-mark {
+  flex-shrink: 0;
+}
+.wordmark-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--fg);
+  letter-spacing: -0.02em;
+}
+.wordmark-tld {
+  color: var(--fg-faint);
+  font-weight: 400;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.header-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  color: var(--fg-muted);
+  text-decoration: none;
+  transition: color 0.15s, background 0.15s;
+}
+.header-nav a:hover {
+  color: var(--fg);
+  background: rgba(255,255,255,0.05);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-ghost {
+  background: transparent;
+  border: none;
+  color: var(--fg-muted);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+  font-family: inherit;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+.btn-ghost:hover { color: var(--fg); background: rgba(255,255,255,0.05); }
+
+.btn-accent {
+  background: var(--accent);
+  color: var(--accent-text);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 7px 16px;
+  border-radius: 7px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+  font-family: inherit;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-accent:hover { background: #1fb06e; }
+
+.btn-mobile-menu {
+  display: none;
+  background: var(--pill-bg);
+  border: 1px solid var(--border);
+  color: var(--fg);
+  padding: 7px 9px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .header-nav, .btn-ghost { display: none; }
+  .btn-mobile-menu { display: flex; }
+}
+
+/* ── HERO ───────────────────────────────────────────── */
+.hero {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 64px 20px 32px;
+  overflow: visible;
+}
+
+.hero-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.hero-vignette::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 45% at 20% 0%, rgba(37,196,132,0.12), transparent 60%);
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* NOW pill */
+.hero-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--pill-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 4px 4px 4px;
+  text-decoration: none;
+  width: fit-content;
+  transition: border-color 0.15s;
+}
+.hero-pill:hover { border-color: var(--border-strong); }
+.hero-pill:hover .pill-arrow { transform: translateX(3px); }
+
+.pill-badge {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  border-radius: 3px;
+  padding: 2px 7px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent-chip);
+}
+.pill-text {
+  font-size: 12px;
+  color: var(--fg-muted);
+}
+.pill-sep {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+}
+.pill-arrow {
+  font-size: 12px;
+  color: var(--fg-faint);
+  padding-right: 6px;
+  transition: transform 0.15s ease, color 0.15s;
+}
+.hero-pill:hover .pill-arrow { color: var(--fg-muted); }
+
+/* Headline */
+.hero-h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 500;
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+  color: var(--fg);
+  text-wrap: balance;
+}
+.hero-h1 em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+/* Sub */
+.hero-sub {
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  line-height: 1.65;
+  color: var(--fg-muted);
+}
+.hero-sub strong {
+  color: var(--fg);
+  font-weight: 500;
+}
+
+/* CTAs */
+.hero-ctas {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-top: 4px;
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--pill-bg);
+  border: 1px solid var(--border-strong);
+  color: var(--fg);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 9px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  font-family: inherit;
+  text-decoration: none;
+}
+.btn-outline:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.25); }
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  color: var(--accent-text);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 9px 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: inherit;
+  text-decoration: none;
+  box-shadow: 0 8px 28px rgba(37,196,132,0.25);
+}
+.btn-primary:hover { background: #1fb06e; }
+
+/* ── PROOF BAND ─────────────────────────────────────── */
+.proof-band {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px 48px;
+}
+.proof-band-label {
+  font-size: 12px;
+  color: var(--fg-faint);
+  letter-spacing: 0.05em;
+  text-align: center;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+}
+.proof-items {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.proof-item {
+  font-size: 13px;
+  color: var(--fg-muted);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.proof-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: var(--accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+/* ── SECTIONS SHARED ────────────────────────────────── */
+.section {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 80px 20px;
+}
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.section-title {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 700;
+  color: var(--fg);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+.section-sub {
+  font-size: 1rem;
+  color: var(--fg-muted);
+  line-height: 1.7;
+  max-width: 560px;
+}
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* ── PROBLEM ─────────────────────────────────────────── */
+.problem-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 40px;
+}
+@media (max-width: 768px) { .problem-grid { grid-template-columns: 1fr; } }
+
+.problem-card {
+  background: rgba(239,68,68,0.04);
+  border: 1px solid rgba(239,68,68,0.18);
+  border-radius: 12px;
+  padding: 24px;
+  transition: border-color 0.2s;
+}
+.problem-card:hover { border-color: rgba(239,68,68,0.35); }
+.problem-icon { font-size: 28px; margin-bottom: 12px; }
+.problem-card h3 { font-size: 15px; font-weight: 700; color: var(--fg); margin-bottom: 8px; }
+.problem-card p { font-size: 13px; color: var(--fg-muted); line-height: 1.6; }
+.problem-cta { margin-top: 40px; text-align: center; font-size: 15px; color: var(--fg-muted); }
+.problem-cta strong { color: var(--accent); }
+
+/* ── NASIL ÇALIŞIR ───────────────────────────────────── */
+.steps-wrap {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  margin-top: 48px;
+  position: relative;
+}
+@media (max-width: 768px) {
+  .steps-wrap { grid-template-columns: 1fr; gap: 24px; }
+  .step-connector { display: none; }
+}
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 24px;
+  position: relative;
+}
+.step-connector {
+  position: absolute;
+  top: 28px;
+  left: calc(50% + 28px);
+  width: calc(100% - 56px);
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), rgba(37,196,132,0.2));
+}
+.step:last-child .step-connector { display: none; }
+.step-number {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  border: 2px solid var(--accent-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--accent);
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+}
+.step h3 { font-size: 16px; font-weight: 700; color: var(--fg); margin-bottom: 8px; }
+.step p  { font-size: 13px; color: var(--fg-muted); line-height: 1.6; }
+
+/* ── ÖZELLİKLER ──────────────────────────────────────── */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 48px;
+}
+@media (max-width: 768px) { .features-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 480px) { .features-grid { grid-template-columns: 1fr; } }
+.feature-card {
+  background: var(--card, #0d2428);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.feature-card:hover { border-color: var(--border-strong); transform: translateY(-2px); }
+.feature-emoji { font-size: 28px; margin-bottom: 14px; }
+.feature-card h3 { font-size: 15px; font-weight: 700; color: var(--fg); margin-bottom: 6px; }
+.feature-card p  { font-size: 13px; color: var(--fg-muted); line-height: 1.6; }
+
+/* ── REFERANSLAR ─────────────────────────────────────── */
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 48px;
+}
+@media (max-width: 768px) { .testimonials-grid { grid-template-columns: 1fr; } }
+.testimonial-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+}
+.testimonial-stars { color: #fbbf24; font-size: 14px; margin-bottom: 12px; letter-spacing: 2px; }
+.testimonial-quote { font-size: 14px; color: var(--fg-muted); line-height: 1.7; margin-bottom: 16px; font-style: italic; }
+.testimonial-author { display: flex; align-items: center; gap: 10px; }
+.testimonial-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--accent-soft); border: 1px solid var(--accent-border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; color: var(--accent); flex-shrink: 0;
+}
+.testimonial-name { font-size: 13px; font-weight: 700; color: var(--fg); }
+.testimonial-role { font-size: 11px; color: var(--fg-faint); }
+
+/* ── FİYATLANDIRMA ───────────────────────────────────── */
+.pricing-wrap { margin-top: 48px; display: flex; justify-content: center; }
+.pricing-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--accent-border);
+  border-radius: 16px;
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.pricing-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), rgba(37,196,132,0.3));
+}
+.pricing-badge {
+  display: inline-block;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  color: var(--accent-chip);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+.pricing-price { font-size: 56px; font-weight: 800; color: var(--fg); line-height: 1; letter-spacing: -0.03em; }
+.pricing-price sup { font-size: 24px; vertical-align: top; margin-top: 10px; font-weight: 600; }
+.pricing-price sub { font-size: 18px; color: var(--fg-muted); font-weight: 400; }
+.pricing-period { font-size: 13px; color: var(--fg-muted); margin-bottom: 28px; margin-top: 4px; }
+.pricing-features { list-style: none; text-align: left; margin-bottom: 28px; display: flex; flex-direction: column; gap: 10px; }
+.pricing-features li { font-size: 14px; color: var(--fg-muted); display: flex; align-items: center; gap: 10px; }
+.pricing-features li::before { content: '✓'; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+.pricing-cta { width: 100%; padding: 14px; background: var(--accent); color: var(--accent-text); border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; transition: background 0.15s; font-family: inherit; text-decoration: none; display: block; box-shadow: 0 8px 28px rgba(37,196,132,0.3); }
+.pricing-cta:hover { background: #1fb06e; }
+.pricing-note { font-size: 12px; color: var(--fg-faint); margin-top: 12px; }
+
+/* ── SSS ─────────────────────────────────────────────── */
+.faq-list { margin-top: 40px; display: flex; flex-direction: column; gap: 8px; max-width: 720px; }
+details.faq-item {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+details.faq-item[open] { border-color: var(--accent-border); }
+details.faq-item[open] summary { color: var(--fg); }
+summary.faq-q {
+  padding: 18px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--fg-muted);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  user-select: none;
+}
+summary.faq-q::-webkit-details-marker { display: none; }
+summary.faq-q::after { content: '+'; font-size: 20px; font-weight: 300; color: var(--accent); flex-shrink: 0; transition: transform 0.2s; }
+details[open] summary.faq-q::after { transform: rotate(45deg); }
+.faq-a { padding: 0 20px 18px; font-size: 14px; color: var(--fg-muted); line-height: 1.7; }
+
+/* ── FINAL CTA ───────────────────────────────────────── */
+.final-cta {
+  margin: 0 20px 80px;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+  background: linear-gradient(135deg, rgba(37,196,132,0.15) 0%, rgba(37,196,132,0.05) 100%);
+  border: 1px solid var(--accent-border);
+  border-radius: 20px;
+  padding: 64px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.final-cta::before {
+  content: '';
+  position: absolute;
+  top: -60px; left: 50%;
+  transform: translateX(-50%);
+  width: 400px; height: 200px;
+  background: radial-gradient(ellipse, rgba(37,196,132,0.15), transparent 70%);
+  pointer-events: none;
+}
+.final-cta h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; color: var(--fg); margin-bottom: 12px; letter-spacing: -0.02em; }
+.final-cta p  { font-size: 16px; color: var(--fg-muted); margin-bottom: 32px; }
+.final-cta-note { font-size: 13px; color: var(--fg-faint); margin-top: 14px; }
+
+/* ── FOOTER ──────────────────────────────────────────── */
+.site-footer {
+  border-top: 1px solid var(--border);
+  background: rgba(0,0,0,0.2);
+  padding: 56px 20px 32px;
+}
+.footer-inner { max-width: 1000px; margin: 0 auto; }
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 48px;
+}
+@media (max-width: 768px) { .footer-top { grid-template-columns: 1fr 1fr; gap: 28px; } }
+@media (max-width: 480px) { .footer-top { grid-template-columns: 1fr; } }
+.footer-brand p { font-size: 13px; color: var(--fg-faint); line-height: 1.7; margin-top: 12px; max-width: 220px; }
+.footer-col h4 { font-size: 12px; font-weight: 700; color: var(--fg); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.footer-col ul li a { font-size: 13px; color: var(--fg-faint); text-decoration: none; transition: color 0.15s; }
+.footer-col ul li a:hover { color: var(--fg-muted); }
+.footer-bottom {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 24px; border-top: 1px solid var(--border);
+  flex-wrap: wrap; gap: 12px;
+}
+.footer-copy { font-size: 12px; color: var(--fg-faint); }
+.footer-legal { display: flex; gap: 16px; }
+.footer-legal a { font-size: 12px; color: var(--fg-faint); text-decoration: none; }
+.footer-legal a:hover { color: var(--fg-muted); }
+.lang-toggle {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--pill-bg); border: 1px solid var(--border);
+  border-radius: 20px; padding: 4px;
+}
+.lang-btn {
+  background: none; border: none; font-size: 12px; color: var(--fg-faint);
+  padding: 4px 10px; border-radius: 16px; cursor: pointer;
+  transition: background 0.15s, color 0.15s; font-family: inherit;
+}
+.lang-btn.active { background: var(--border-strong); color: var(--fg); }
+
+/* ── RESPONSIVE POLISH ───────────────────────────────── */
+@media (max-width: 640px) {
+  .hero { padding: 40px 16px 24px; }
+  .hero-ctas { flex-direction: column; align-items: flex-start; }
+  .hero-ctas .btn-outline,
+  .hero-ctas .btn-primary { width: 100%; justify-content: center; }
+  .section { padding: 56px 16px; }
+  .final-cta { padding: 40px 20px; margin: 0 16px 60px; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .chat-sim-frame { max-width: 100%; }
+  .pricing-card { padding: 28px 20px; }
+}
+
+/* ── ICONS (inline SVG helpers) ─────────────────────── */
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+/* ── WHATSAPP CHAT SIM ──────────────────────────────── */
+.chat-sim-wrap {
+  position: relative;
+  margin-top: 48px;
+  -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+}
+@media (max-width: 640px) { .chat-sim-wrap { margin-right: -32px; } }
+
+.chat-sim-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% -10%, rgba(37,196,132,0.10), transparent 60%);
+  filter: blur(50px);
+  transform: translateY(-20%) scale(1.2);
+}
+
+.chat-sim-frame {
+  position: relative;
+  max-width: 480px;
+  margin: 0 auto;
+  border-radius: 16px;
+  background: #0b2429;
+  border: 1px solid rgba(255,255,255,0.08);
+  overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.45);
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: #0d2d34;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.chat-header-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.chat-header-info { flex: 1; }
+.chat-header-name { font-size: 13px; font-weight: 700; color: var(--fg); }
+.chat-header-status { font-size: 11px; color: var(--accent); }
+.chat-header-dots { display: flex; gap: 3px; padding: 4px; }
+.chat-header-dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.3); }
+
+.chat-body {
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 280px;
+  background-image: radial-gradient(rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.chat-bubble {
+  max-width: 78%;
+  padding: 9px 13px;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  position: relative;
+}
+.chat-bubble.bot {
+  align-self: flex-start;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.09);
+  color: var(--fg);
+  border-bottom-left-radius: 3px;
+}
+.chat-bubble.user {
+  align-self: flex-end;
+  background: rgba(37,196,132,0.18);
+  border: 1px solid rgba(37,196,132,0.3);
+  color: var(--fg);
+  border-bottom-right-radius: 3px;
+}
+.chat-time {
+  font-size: 9px;
+  color: rgba(255,255,255,0.35);
+  margin-top: 3px;
+  display: block;
+  text-align: right;
+  font-family: 'JetBrains Mono', monospace;
+}
+.chat-bubble.bot .chat-time { text-align: left; }
+
+.chat-quick-replies {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+.chat-qr {
+  background: rgba(37,196,132,0.1);
+  border: 1px solid rgba(37,196,132,0.3);
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 11px;
+  color: var(--accent-chip);
+  cursor: pointer;
+}
+
+.chat-typing {
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.09);
+  padding: 10px 14px;
+  border-radius: 12px;
+  border-bottom-left-radius: 3px;
+}
+.chat-typing span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.4);
+  animation: typingDot 1.2s ease-in-out infinite;
+}
+.chat-typing span:nth-child(2) { animation-delay: 0.2s; }
+.chat-typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typingDot {
+  0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(-3px); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ═══════════════════════════════════════════════════ HEADER -->
+<header class="site-header" id="site-header">
+  <div class="header-inner">
+    <a href="#" class="wordmark">
+      <!-- Logo mark: stacked squares -->
+      <svg class="logo-mark" viewBox="0 0 28 28" width="24" height="24">
+        <rect x="1"  y="1"  width="14" height="14" rx="3.5" fill="#25c484"/>
+        <rect x="13" y="13" width="14" height="14" rx="3.5" fill="#25c484" fill-opacity="0.22"/>
+        <rect x="13" y="13" width="14" height="14" rx="3.5" fill="none" stroke="#25c484" stroke-opacity="0.55" stroke-width="1"/>
+      </svg>
+      <span class="wordmark-text">KıbrısBot<span class="wordmark-tld">.com</span></span>
+    </a>
+
+    <nav class="header-nav">
+      <a href="#ozellikler">
+        Ürün
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+      </a>
+      <a href="#fiyat">Fiyat</a>
+      <a href="#hakkinda">Hakkında</a>
+    </nav>
+
+    <div class="header-actions">
+      <a href="index.html" class="btn-ghost">Giriş</a>
+      <a href="#fiyat" class="btn-accent">
+        Ücretsiz Başla
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <button class="btn-mobile-menu" aria-label="Menü">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16"/><path d="M4 6h16"/><path d="M4 18h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════ HERO -->
+<main>
+<section class="hero">
+  <div class="hero-vignette" aria-hidden="true"></div>
+
+  <!-- Copy column -->
+  <div class="hero-copy">
+
+    <!-- NOW pill -->
+    <a href="#demo" class="hero-pill ani-up d500">
+      <span class="pill-badge">NOW</span>
+      <span class="pill-text">BETA · Erken erişim açık</span>
+      <span class="pill-sep"></span>
+      <span class="pill-arrow">&#8594;</span>
+    </a>
+
+    <!-- Headline -->
+    <h1 class="hero-h1 ani-up d100">
+      İşletmenize WhatsApp botu kurun&nbsp;— müşteriler <em>7/24 yanıt alsın.</em>
+    </h1>
+
+    <!-- Sub -->
+    <p class="hero-sub ani-up d200">
+      <strong>Kurulum 5 dakika.</strong> Kod gerekmez. İstediğin zaman iptal.
+    </p>
+
+    <!-- CTAs -->
+    <div class="hero-ctas ani-up d300">
+      <a href="#nasil-calisir" class="btn-outline">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6z"/>
+        </svg>
+        Nasıl çalışır?
+      </a>
+      <a href="#fiyat" class="btn-primary">
+        14 Gün Ücretsiz Dene
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── WhatsApp Chat Sim ── -->
+  <div class="chat-sim-wrap ani-up d700">
+    <div class="chat-sim-glow" aria-hidden="true"></div>
+    <div class="chat-sim-frame">
+      <!-- Chat header -->
+      <div class="chat-header">
+        <div class="chat-header-avatar">🤖</div>
+        <div class="chat-header-info">
+          <div class="chat-header-name">KıbrısBot Asistan</div>
+          <div class="chat-header-status">● Çevrimiçi</div>
+        </div>
+        <div class="chat-header-dots">
+          <div class="chat-header-dot"></div>
+          <div class="chat-header-dot"></div>
+          <div class="chat-header-dot"></div>
+        </div>
+      </div>
+
+      <!-- Chat body -->
+      <div class="chat-body">
+        <div class="chat-bubble bot">
+          👋 Merhaba! Ben KıbrısBot. Size nasıl yardımcı olabilirim?
+          <span class="chat-time">14:22</span>
+          <div class="chat-quick-replies">
+            <span class="chat-qr">📋 Menü</span>
+            <span class="chat-qr">🕐 Çalışma saatleri</span>
+            <span class="chat-qr">📍 Konum</span>
+          </div>
+        </div>
+
+        <div class="chat-bubble user">
+          Çalışma saatleriniz nedir?
+          <span class="chat-time">14:23 ✓✓</span>
+        </div>
+
+        <div class="chat-bubble bot">
+          🕐 Çalışma saatlerimiz:<br>
+          <strong>Pazartesi–Cuma:</strong> 09:00–18:00<br>
+          <strong>Cumartesi:</strong> 10:00–14:00<br>
+          Pazar kapalıyız. Başka bir sorunuz var mı?
+          <span class="chat-time">14:23</span>
+        </div>
+
+        <div class="chat-bubble user">
+          Rezervasyon yapabilir miyim?
+          <span class="chat-time">14:24 ✓✓</span>
+        </div>
+
+        <div class="chat-typing">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ PROOF BAND -->
+<div class="proof-band">
+  <p class="proof-band-label">200+ işletmenin güveniyle</p>
+  <div class="proof-items">
+    <div class="proof-item"><span class="proof-icon">🍕</span> Restoranlar</div>
+    <div class="proof-item"><span class="proof-icon">🏠</span> Emlak</div>
+    <div class="proof-item"><span class="proof-icon">🛍️</span> E-ticaret</div>
+    <div class="proof-item"><span class="proof-icon">🏥</span> Sağlık</div>
+    <div class="proof-item"><span class="proof-icon">🎓</span> Eğitim</div>
+    <div class="proof-item"><span class="proof-icon">💈</span> Güzellik</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ PROBLEM -->
+<div class="section-divider"></div>
+<div class="section" id="problem">
+  <div class="section-label">Problem</div>
+  <h2 class="section-title">Müşteri sorularına<br>yetişemiyor musunuz?</h2>
+  <p class="section-sub">Her işletme aynı döngüyü yaşıyor. KıbrısBot bu üç sorunu birden çözer.</p>
+  <div class="problem-grid">
+    <div class="problem-card">
+      <div class="problem-icon">🌙</div>
+      <h3>Mesai dışı sorular yanıtsız kalıyor</h3>
+      <p>Müşteri saat 22:00'de soruyor, siz sabah görüyorsunuz — o çoktan rakibinize gitmiş.</p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon">🔁</div>
+      <h3>Aynı soruları tekrar tekrar yanıtlıyorsunuz</h3>
+      <p>"Çalışma saatleriniz nedir?" — günde onlarca kez. Bu zamanı başka şeylere harcayabilirsiniz.</p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon">💸</div>
+      <h3>Yanıt gecikmesi müşteri kaybettiriyor</h3>
+      <p>Araştırmalara göre müşterilerin %82'si 10 dakika içinde yanıt almayı bekliyor.</p>
+    </div>
+  </div>
+  <p class="problem-cta"><strong>KıbrısBot</strong> bu üçünü de çözer — kurulum 5 dakika.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ NASIL ÇALIŞIR -->
+<div class="section-divider"></div>
+<div class="section" id="nasil-calisir">
+  <div class="section-label">Nasıl Çalışır</div>
+  <h2 class="section-title">3 adımda yayına girin</h2>
+  <p class="section-sub">Teknik bilgi gerekmez. WhatsApp numaranız varsa başlamaya hazırsınız.</p>
+  <div class="steps-wrap">
+    <div class="step">
+      <div class="step-connector"></div>
+      <div class="step-number">1</div>
+      <h3>Hesap Aç</h3>
+      <p>WhatsApp numaranızı bağlayın ve işletme bilgilerinizi girin. 5 dakika sürer.</p>
+    </div>
+    <div class="step">
+      <div class="step-connector"></div>
+      <div class="step-number">2</div>
+      <h3>Botu Özelleştir</h3>
+      <p>Soru-cevap akışlarınızı, otomatik menüleri ve yanıt metinlerinizi panelden ayarlayın.</p>
+    </div>
+    <div class="step">
+      <div class="step-number">3</div>
+      <h3>Yayına Girin</h3>
+      <p>Müşterileriniz anında 7/24 otomatik yanıt almaya başlar. Siz sadece takip edin.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ ÖZELLİKLER -->
+<div class="section-divider"></div>
+<div class="section" id="ozellikler">
+  <div class="section-label">Özellikler</div>
+  <h2 class="section-title">Tek platformda her şey</h2>
+  <p class="section-sub">Bot'unuzu yönetmek için başka bir araca ihtiyacınız yok.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-emoji">🤖</div>
+      <h3>Otomatik Yanıt</h3>
+      <p>Sık sorulan soruları 7/24 anında yanıtlayın. Müşteri beklemez, siz yorulmaz.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-emoji">🌿</div>
+      <h3>Akıllı Menüler</h3>
+      <p>Müşteriyi doğru bilgiye hızla yönlendiren interaktif WhatsApp menüleri.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-emoji">📊</div>
+      <h3>Canlı Analitik</h3>
+      <p>Kaç mesaj geldi, hangi sorular soruldu, yanıt süreniz ne? Hepsini görün.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-emoji">👤</div>
+      <h3>İnsan Devralma</h3>
+      <p>Bot yetersiz kaldığında konuşmayı ekibinizdeki bir kişiye anında aktarın.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-emoji">📨</div>
+      <h3>Toplu Mesaj</h3>
+      <p>Kampanya duyuruları, hatırlatmalar ve özel teklifleri tüm müşterilere gönderin.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-emoji">🔌</div>
+      <h3>Entegrasyonlar</h3>
+      <p>CRM, e-ticaret platformları ve rezervasyon sistemleriyle bağlantı kurun.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ REFERANSLAR -->
+<div class="section-divider"></div>
+<div class="section" id="referanslar">
+  <div class="section-label">Referanslar</div>
+  <h2 class="section-title">İşletmeler ne diyor?</h2>
+  <div class="testimonials-grid">
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-quote">"Artık mesai dışı saatlerde bile müşterilerimiz anında yanıt alıyor. Kurulum gerçekten 5 dakika sürdü, inanamadım."</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">AK</div>
+        <div>
+          <div class="testimonial-name">Ahmet K.</div>
+          <div class="testimonial-role">Restoran Sahibi · Lefkoşa</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-quote">"Müşteri sorularına cevap verirken harcadığım 2 saati artık işime yatırıyorum. KıbrısBot olmadan nasıl çalışıyordum bilmiyorum."</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">SY</div>
+        <div>
+          <div class="testimonial-name">Selin Y.</div>
+          <div class="testimonial-role">Güzellik Salonu · Gazimağusa</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-quote">"E-ticaret sitenin WhatsApp entegrasyonu mükemmel çalışıyor. Sipariş takibi sorularının %90'ı artık otomatik yanıtlanıyor."</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">MÖ</div>
+        <div>
+          <div class="testimonial-name">Mustafa Ö.</div>
+          <div class="testimonial-role">E-ticaret · Girne</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ FİYATLANDIRMA -->
+<div class="section-divider"></div>
+<div class="section" id="fiyat">
+  <div class="section-label">Fiyatlandırma</div>
+  <h2 class="section-title">Basit, şeffaf fiyatlandırma</h2>
+  <p class="section-sub">Gizli ücret yok. İstediğin zaman iptal. Tüm özellikler dahil.</p>
+  <div class="pricing-wrap">
+    <div class="pricing-card">
+      <span class="pricing-badge">Tüm özellikler dahil</span>
+      <div class="pricing-price">
+        <sup>$</sup>49<span style="font-size:32px">.90</span><sub>/ay</sub>
+      </div>
+      <p class="pricing-period">aylık faturalandırma · istediğin zaman iptal</p>
+      <ul class="pricing-features">
+        <li>Sınırsız otomatik yanıt</li>
+        <li>Akıllı WhatsApp menüleri</li>
+        <li>Canlı analitik paneli</li>
+        <li>İnsan devralma özelliği</li>
+        <li>Toplu mesaj gönderimi</li>
+        <li>Entegrasyonlar (CRM, e-ticaret)</li>
+        <li>Öncelikli destek</li>
+      </ul>
+      <a href="#" class="pricing-cta">14 Gün Ücretsiz Dene</a>
+      <p class="pricing-note">Kart gerekmez · Kurulum 5 dakika</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ SSS -->
+<div class="section-divider"></div>
+<div class="section" id="sss">
+  <div class="section-label">SSS</div>
+  <h2 class="section-title">Sık sorulan sorular</h2>
+  <div class="faq-list">
+    <details class="faq-item">
+      <summary class="faq-q">WhatsApp Business API hesabı gerekli mi?</summary>
+      <p class="faq-a">Hayır. KıbrısBot mevcut WhatsApp numaranızla çalışır. Ayrıca bir API hesabı açmanıza gerek yok — tüm teknik kurulumu biz hallederiz.</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">Kurulum ne kadar sürer?</summary>
+      <p class="faq-a">Ortalama 5 dakika. WhatsApp numaranızı doğruluyorsunuz, temel bot akışınızı ayarlıyorsunuz ve yayına giriyorsunuz. Daha ileri özelleştirmeler için 30 dakika yeterli.</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">İstediğim zaman iptal edebilir miyim?</summary>
+      <p class="faq-a">Evet, herhangi bir taahhüt yok. Hesabınızdan dilediğiniz zaman iptal edebilirsiniz. Mevcut dönemin sonuna kadar hizmet devam eder.</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">Türkçe dil desteği var mı?</summary>
+      <p class="faq-a">Evet, tam Türkçe desteği mevcut. Bot yanıtlarınızı, menülerinizi ve tüm içerikleri Türkçe yazabilirsiniz. İngilizce ve diğer dillerde de kullanılabilir.</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">Birden fazla ekip üyesi ekleyebilir miyim?</summary>
+      <p class="faq-a">Evet. Mevcut planda birden fazla ekip üyesi konuşmaları takip edebilir ve insan devralma özelliğini kullanabilir. Ekip yönetimi panelden yapılır.</p>
+    </details>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ FINAL CTA -->
+<div class="section-divider"></div>
+<div style="padding: 80px 0">
+  <div class="final-cta">
+    <h2>Bugün ücretsiz başlayın</h2>
+    <p>14 gün boyunca tüm özelliklere ücretsiz erişin. Kart gerekmez.</p>
+    <a href="#" class="btn-primary" style="font-size:16px;padding:14px 28px;border-radius:10px;display:inline-flex;align-items:center;gap:8px">
+      Hesap Oluştur
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    </a>
+    <p class="final-cta-note">Kurulum 5 dakika · İstediğin zaman iptal</p>
+  </div>
+</div>
+</main>
+
+<!-- ═══════════════════════════════════════════════════ FOOTER -->
+<footer class="site-footer" id="hakkinda">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="wordmark">
+          <svg class="logo-mark" viewBox="0 0 28 28" width="22" height="22">
+            <rect x="1" y="1" width="14" height="14" rx="3.5" fill="#25c484"/>
+            <rect x="13" y="13" width="14" height="14" rx="3.5" fill="#25c484" fill-opacity="0.22"/>
+            <rect x="13" y="13" width="14" height="14" rx="3.5" fill="none" stroke="#25c484" stroke-opacity="0.55" stroke-width="1"/>
+          </svg>
+          <span class="wordmark-text">KıbrısBot<span class="wordmark-tld">.com</span></span>
+        </a>
+        <p>Her sektörden işletmeye WhatsApp botu hizmeti. Kurulum 5 dakika, 7/24 müşteri iletişimi.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Ürün</h4>
+        <ul>
+          <li><a href="#ozellikler">Özellikler</a></li>
+          <li><a href="#fiyat">Fiyatlandırma</a></li>
+          <li><a href="#nasil-calisir">Nasıl Çalışır</a></li>
+          <li><a href="#sss">SSS</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Şirket</h4>
+        <ul>
+          <li><a href="#hakkinda">Hakkında</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Kariyer</a></li>
+          <li><a href="#">İletişim</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Destek</h4>
+        <ul>
+          <li><a href="#">Dokümantasyon</a></li>
+          <li><a href="#">Durum Sayfası</a></li>
+          <li><a href="#">Destek Merkezi</a></li>
+          <li><a href="#">WhatsApp'tan Yaz</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 KıbrısBot. Tüm hakları saklıdır.</span>
+      <div class="lang-toggle">
+        <button class="lang-btn active" onclick="setLang('tr')" id="btn-tr">🇹🇷 Türkçe</button>
+        <button class="lang-btn" onclick="setLang('en')" id="btn-en">🇬🇧 English</button>
+      </div>
+      <div class="footer-legal">
+        <a href="#">Gizlilik Politikası</a>
+        <a href="#">Kullanım Şartları</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════ SCRIPT -->
+<script>
+  /* Sticky header: add .scrolled class on scroll */
+  const header = document.getElementById('site-header');
+  function onScroll() {
+    header.classList.toggle('scrolled', window.scrollY > 12);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* ── DİL SİSTEMİ ── */
+  function setLang(lang) {
+    document.getElementById('btn-tr').classList.toggle('active', lang === 'tr');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.documentElement.lang = lang;
+
+    const translations = {
+      tr: {
+        heroH1: 'İşletmenize WhatsApp botu kurun — müşteriler <em>7/24 yanıt alsın.</em>',
+        heroSub: '<strong>Kurulum 5 dakika.</strong> Kod gerekmez. İstediğin zaman iptal.',
+        pillText: 'BETA · Erken erişim açık',
+        proofLabel: '200+ işletmenin güveniyle',
+      },
+      en: {
+        heroH1: 'Set up a WhatsApp bot for your business — customers get <em>24/7 replies.</em>',
+        heroSub: '<strong>5-minute setup.</strong> No code. Cancel anytime.',
+        pillText: 'BETA · Early access open',
+        proofLabel: 'Trusted by 200+ businesses',
+      }
+    };
+
+    const t = translations[lang];
+    const h1 = document.querySelector('.hero-h1');
+    if (h1) h1.innerHTML = t.heroH1;
+    const sub = document.querySelector('.hero-sub');
+    if (sub) sub.innerHTML = t.heroSub;
+    const pill = document.querySelector('.pill-text');
+    if (pill) pill.textContent = t.pillText;
+    const proofLabel = document.querySelector('.proof-band-label');
+    if (proofLabel) proofLabel.textContent = t.proofLabel;
+  }
+</script>
+
+</body>
+</html>
