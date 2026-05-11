@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gizlilik Politikası — KıbrısBot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --fg: #ffffff;
+  --fg-muted: rgba(255,255,255,0.62);
+  --fg-faint: rgba(255,255,255,0.35);
+  --accent: #25c484;
+  --border: rgba(255,255,255,0.08);
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: linear-gradient(180deg, #061417 0%, #0a1f23 100%);
+  color: var(--fg);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+.page-header {
+  border-bottom: 1px solid var(--border);
+  padding: 18px 20px;
+}
+.header-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.wordmark {
+  display: flex; align-items: center; gap: 8px;
+  text-decoration: none; font-size: 15px; font-weight: 600; color: var(--fg);
+}
+.back-link {
+  font-size: 13px; color: var(--fg-faint); text-decoration: none;
+  display: flex; align-items: center; gap: 6px;
+  transition: color 0.15s;
+}
+.back-link:hover { color: var(--fg-muted); }
+.content {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 56px 20px 96px;
+}
+h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+.last-updated { font-size: 13px; color: var(--fg-faint); margin-bottom: 48px; }
+h2 { font-size: 1.1rem; font-weight: 700; margin: 40px 0 12px; color: var(--fg); }
+p { font-size: 15px; color: var(--fg-muted); line-height: 1.75; margin-bottom: 16px; }
+ul { padding-left: 20px; margin-bottom: 16px; }
+li { font-size: 15px; color: var(--fg-muted); line-height: 1.75; margin-bottom: 6px; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.divider { height: 1px; background: var(--border); margin: 40px 0; }
+footer { border-top: 1px solid var(--border); padding: 24px 20px; text-align: center; font-size: 12px; color: var(--fg-faint); }
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="header-inner">
+    <a href="index.html" class="wordmark">
+      <svg viewBox="0 0 28 28" width="22" height="22">
+        <rect x="1" y="1" width="14" height="14" rx="3.5" fill="#25c484"/>
+        <rect x="13" y="13" width="14" height="14" rx="3.5" fill="#25c484" fill-opacity="0.22"/>
+        <rect x="13" y="13" width="14" height="14" rx="3.5" fill="none" stroke="#25c484" stroke-opacity="0.55" stroke-width="1"/>
+      </svg>
+      KıbrısBot
+    </a>
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      Ana Sayfa
+    </a>
+  </div>
+</header>
+
+<main class="content">
+  <h1>Gizlilik Politikası</h1>
+  <p class="last-updated">Son güncelleme: 11 Mayıs 2026</p>
+
+  <p>KıbrısBot ("biz", "hizmet") olarak kişisel verilerinizin güvenliğini önemsiyoruz. Bu politika, kibrisbot.com üzerinden sunulan hizmetleri kullanırken hangi verileri topladığımızı, nasıl kullandığımızı ve nasıl koruduğumuzu açıklar.</p>
+
+  <div class="divider"></div>
+
+  <h2>1. Toplanan Veriler</h2>
+  <p>Hizmetimizi kullanırken aşağıdaki veriler toplanabilir:</p>
+  <ul>
+    <li>Ad, soyad ve iletişim bilgileri (e-posta, telefon numarası)</li>
+    <li>İşletme adı ve sektör bilgisi</li>
+    <li>WhatsApp üzerinden iletilen mesaj içerikleri ve meta verileri</li>
+    <li>Panel kullanım verileri (oturum süresi, erişilen sayfalar)</li>
+    <li>IP adresi ve tarayıcı bilgileri</li>
+  </ul>
+
+  <h2>2. Verilerin Kullanım Amacı</h2>
+  <p>Toplanan veriler yalnızca aşağıdaki amaçlarla kullanılır:</p>
+  <ul>
+    <li>Hizmetin sağlanması ve teknik desteğin sunulması</li>
+    <li>Hesap yönetimi ve faturalandırma işlemleri</li>
+    <li>Bot akışlarının ve analitik raporların oluşturulması</li>
+    <li>Hizmet kalitesinin iyileştirilmesi</li>
+    <li>Yasal yükümlülüklerin yerine getirilmesi</li>
+  </ul>
+
+  <h2>3. Verilerin Paylaşımı</h2>
+  <p>Kişisel verileriniz; yasal zorunluluk dışında üçüncü taraflarla satılmaz, kiralanmaz veya paylaşılmaz. Hizmet sağlayıcılarımız (Supabase, Twilio gibi altyapı ortakları) yalnızca hizmetin işleyişi kapsamında verilerinize erişebilir ve kendi gizlilik politikalarına tabidir.</p>
+
+  <h2>4. Veri Güvenliği</h2>
+  <p>Verileriniz şifreli bağlantılar (HTTPS/TLS) üzerinden iletilir ve güvenli sunucularda saklanır. Yetkisiz erişime karşı teknik ve idari önlemler alınmaktadır.</p>
+
+  <h2>5. Çerezler</h2>
+  <p>Web sitemiz oturum yönetimi ve analitik amacıyla çerezler kullanabilir. Tarayıcı ayarlarınızdan çerezleri devre dışı bırakabilirsiniz; ancak bu durumda bazı özellikler düzgün çalışmayabilir.</p>
+
+  <h2>6. Veri Saklama Süresi</h2>
+  <p>Kişisel verileriniz, hizmet ilişkisi devam ettiği süre boyunca saklanır. Abonelik sona erdikten sonra verileriniz 90 gün içinde sistemlerimizden silinir. Yasal yükümlülük gerektiren durumlar saklı kalmak üzere.</p>
+
+  <h2>7. KVKK Kapsamındaki Haklarınız</h2>
+  <p>6698 sayılı Kişisel Verilerin Korunması Kanunu (KVKK) kapsamında aşağıdaki haklara sahipsiniz:</p>
+  <ul>
+    <li>Kişisel verilerinizin işlenip işlenmediğini öğrenme</li>
+    <li>İşlenen verileriniz hakkında bilgi talep etme</li>
+    <li>Verilerin düzeltilmesini veya silinmesini talep etme</li>
+    <li>İşlemenin kısıtlanmasını talep etme</li>
+    <li>Veri taşınabilirliği hakkı</li>
+  </ul>
+  <p>Bu haklarınızı kullanmak için <a href="https://wa.me/905488522207">WhatsApp</a> üzerinden veya <strong>ardabilgehan0@gmail.com</strong> adresine e-posta göndererek bizimle iletişime geçebilirsiniz.</p>
+
+  <h2>8. Değişiklikler</h2>
+  <p>Bu politika gerektiğinde güncellenebilir. Önemli değişikliklerde mevcut müşterilerimiz e-posta yoluyla bilgilendirilir.</p>
+
+  <h2>9. İletişim</h2>
+  <p>Sorularınız için: <a href="https://wa.me/905488522207">WhatsApp</a> veya <strong>ardabilgehan0@gmail.com</strong></p>
+</main>
+
+<footer>
+  © 2026 KıbrısBot · <a href="index.html">Ana Sayfa</a> · <a href="kullanim-sartlari.html">Kullanım Şartları</a>
+</footer>
+
+</body>
+</html>
