@@ -13,38 +13,36 @@
   gtag('config', 'G-HLYZDXJY8V');
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --page-bg: linear-gradient(180deg, #061417 0%, #0a1f23 50%, #0c2a2f 100%);
-  --fg: #ffffff;
-  --fg-muted: rgba(255,255,255,0.6);
-  --fg-faint: rgba(255,255,255,0.35);
-  --accent: #25c484;
-  --accent-text: #06191d;
-  --accent-soft: rgba(37,196,132,0.15);
-  --accent-border: rgba(37,196,132,0.3);
-  --accent-chip: #6ee7b7;
-  --frame: #0b2429;
-  --panel: #0a1d21;
-  --sidebar: #081a1e;
-  --card: #0d2428;
+  --page-bg: #0E0E10;
+  --fg: #EBEBEB;
+  --fg-muted: #8A8A8A;
+  --fg-faint: #4E4E4E;
+  --accent: #00C4AB;
+  --accent-text: #0E0E10;
+  --accent-soft: rgba(0,196,171,0.10);
+  --accent-border: rgba(0,196,171,0.22);
+  --accent-chip: #00C4AB;
+  --frame: #141416;
+  --panel: #0E0E10;
+  --sidebar: #111113;
+  --card: rgba(255,255,255,0.035);
   --border: rgba(255,255,255,0.08);
-  --border-strong: rgba(255,255,255,0.14);
+  --border-strong: rgba(255,255,255,0.13);
   --pill-bg: rgba(255,255,255,0.04);
-  --header-bg: rgba(7,24,29,0.9);
-  --vignette: radial-gradient(ellipse 60% 45% at 20% 0%, rgba(37,196,132,0.12), transparent 60%);
+  --header-bg: rgba(14,14,16,0.92);
 }
 
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background: var(--frame);
-  background: linear-gradient(180deg, #061417 0%, #0a1f23 50%, #0c2a2f 100%);
+  font-family: 'DM Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  background: #0E0E10;
   color: var(--fg);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
@@ -183,7 +181,7 @@ body {
   align-items: center;
   gap: 6px;
 }
-.btn-accent:hover { background: #1fb06e; }
+.btn-accent:hover { background: #00d4b8; }
 
 .btn-mobile-menu {
   display: none;
@@ -221,7 +219,7 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 60% 45% at 20% 0%, rgba(37,196,132,0.12), transparent 60%);
+  background: radial-gradient(ellipse 60% 45% at 20% 0%, rgba(0,196,171,0.08), transparent 60%);
 }
 
 .hero-copy {
@@ -346,7 +344,7 @@ body {
   text-decoration: none;
   box-shadow: 0 8px 28px rgba(37,196,132,0.25);
 }
-.btn-primary:hover { background: #1fb06e; }
+.btn-primary:hover { background: #00d4b8; }
 
 /* ── PROOF BAND ─────────────────────────────────────── */
 .proof-band {
@@ -496,7 +494,7 @@ body {
 @media (max-width: 768px) { .features-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 480px) { .features-grid { grid-template-columns: 1fr; } }
 .feature-card {
-  background: var(--card, #0d2428);
+  background: var(--card);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 24px;
@@ -526,9 +524,9 @@ body {
 .testimonial-author { display: flex; align-items: center; gap: 10px; }
 .testimonial-avatar {
   width: 36px; height: 36px; border-radius: 50%;
-  background: var(--accent-soft); border: 1px solid var(--accent-border);
+  background: rgba(255,255,255,0.07); border: 1px solid var(--border);
   display: flex; align-items: center; justify-content: center;
-  font-size: 14px; font-weight: 700; color: var(--accent); flex-shrink: 0;
+  font-size: 14px; font-weight: 700; color: var(--fg-muted); flex-shrink: 0;
 }
 .testimonial-name { font-size: 13px; font-weight: 700; color: var(--fg); }
 .testimonial-role { font-size: 11px; color: var(--fg-faint); }
@@ -611,7 +609,7 @@ details[open] summary.faq-q::after { transform: rotate(45deg); }
   max-width: 960px;
   margin-left: auto;
   margin-right: auto;
-  background: linear-gradient(135deg, rgba(37,196,132,0.15) 0%, rgba(37,196,132,0.05) 100%);
+  background: rgba(255,255,255,0.03);
   border: 1px solid var(--accent-border);
   border-radius: 20px;
   padding: 64px 40px;
@@ -635,7 +633,7 @@ details[open] summary.faq-q::after { transform: rotate(45deg); }
 /* ── FOOTER ──────────────────────────────────────────── */
 .site-footer {
   border-top: 1px solid var(--border);
-  background: rgba(0,0,0,0.2);
+  background: rgba(255,255,255,0.02);
   padding: 56px 20px 32px;
 }
 .footer-inner { max-width: 1000px; margin: 0 auto; }
@@ -711,10 +709,10 @@ details[open] summary.faq-q::after { transform: rotate(45deg); }
   padding: 11px;
   border-radius: 34px;
   background:
-    linear-gradient(145deg, rgba(255,255,255,0.18), rgba(255,255,255,0.03) 32%, rgba(0,0,0,0.38)),
-    #0a1e22;
-  border: 1px solid rgba(255,255,255,0.14);
-  box-shadow: 0 36px 90px rgba(0,0,0,0.5), 0 0 0 1px rgba(37,196,132,0.07);
+    linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.02) 32%, rgba(0,0,0,0.38)),
+    #111113;
+  border: 1px solid rgba(255,255,255,0.13);
+  box-shadow: 0 36px 90px rgba(0,0,0,0.5);
 }
 
 .phone-speaker {
@@ -735,9 +733,9 @@ details[open] summary.faq-q::after { transform: rotate(45deg); }
   overflow-y: auto;
   border-radius: 26px;
   background:
-    linear-gradient(45deg, rgba(255,255,255,0.025) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.025) 75%),
-    linear-gradient(45deg, rgba(255,255,255,0.025) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.025) 75%),
-    #060f11;
+    linear-gradient(45deg, rgba(255,255,255,0.022) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.022) 75%),
+    linear-gradient(45deg, rgba(255,255,255,0.022) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.022) 75%),
+    #0E0E10;
   background-position: 0 0, 14px 14px;
   background-size: 28px 28px;
   scrollbar-width: none;
@@ -752,7 +750,7 @@ details[open] summary.faq-q::after { transform: rotate(45deg); }
   align-items: center;
   gap: 10px;
   padding: 20px 16px 12px;
-  background: rgba(6,15,17,0.94);
+  background: rgba(14,14,16,0.94);
   border-bottom: 1px solid rgba(255,255,255,0.06);
   backdrop-filter: blur(14px);
 }
@@ -764,8 +762,8 @@ details[open] summary.faq-q::after { transform: rotate(45deg); }
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: linear-gradient(135deg, #25c484 0%, #6ee7b7 54%, #a7f3d0 100%);
-  color: #06191d;
+  background: var(--accent);
+  color: #0E0E10;
   font-size: 11px;
   font-weight: 900;
   flex-shrink: 0;
@@ -831,10 +829,10 @@ details[open] summary.faq-q::after { transform: rotate(45deg); }
   box-shadow: 0 4px 16px rgba(0,0,0,0.2);
 }
 .chat-bubble.wide { max-width: 92%; }
-.chat-bubble.bot  { background: #0d2428; color: rgba(255,255,255,0.9);
+.chat-bubble.bot  { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.9);
                     border: 1px solid rgba(255,255,255,0.07); }
-.chat-bubble.user { background: rgba(37,196,132,0.18); color: #fff;
-                    border: 1px solid rgba(37,196,132,0.28); }
+.chat-bubble.user { background: rgba(0,196,171,0.14); color: #fff;
+                    border: 1px solid rgba(0,196,171,0.25); }
 
 .chat-time-stamp {
   font-size: 9px;
@@ -907,7 +905,7 @@ details[open] summary.faq-q::after { transform: rotate(45deg); }
   gap: 6px;
   border-radius: 8px;
   padding: 9px 11px;
-  background: #0d2428;
+  background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.07);
 }
 .time-card span   { color: rgba(255,255,255,0.8); font-size: 11px; }
@@ -923,9 +921,9 @@ details[open] summary.faq-q::after { transform: rotate(45deg); }
   gap: 6px;
   border-radius: 8px;
   padding: 10px;
-  background: rgba(6,20,23,0.95);
-  border: 1px solid rgba(37,196,132,0.28);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.38);
+  background: rgba(14,14,16,0.96);
+  border: 1px solid rgba(0,196,171,0.25);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
 }
 .slot-ticket span   { color: rgba(255,255,255,0.6); font-size: 10px; font-weight: 700; }
 .slot-ticket strong {
@@ -948,11 +946,10 @@ details[open] summary.faq-q::after { transform: rotate(45deg); }
 <header class="site-header" id="site-header">
   <div class="header-inner">
     <a href="#" class="wordmark">
-      <!-- Logo mark: stacked squares -->
-      <svg class="logo-mark" viewBox="0 0 28 28" width="24" height="24">
-        <rect x="1"  y="1"  width="14" height="14" rx="3.5" fill="#25c484"/>
-        <rect x="13" y="13" width="14" height="14" rx="3.5" fill="#25c484" fill-opacity="0.22"/>
-        <rect x="13" y="13" width="14" height="14" rx="3.5" fill="none" stroke="#25c484" stroke-opacity="0.55" stroke-width="1"/>
+      <!-- Logo mark -->
+      <svg class="logo-mark" viewBox="0 0 32 32" width="28" height="28">
+        <rect width="32" height="32" rx="8" fill="#00C4AB"/>
+        <path d="M9 8h3.5v6.5l7.5-6.5H24l-8.5 7.5 8.5 8H20l-7.5-6.5V24H9V8z" fill="#0A1412"/>
       </svg>
       <span class="wordmark-text">KıbrısBot<span class="wordmark-tld">.com</span></span>
     </a>
@@ -967,7 +964,7 @@ details[open] summary.faq-q::after { transform: rotate(45deg); }
     </nav>
 
     <div class="header-actions">
-      <a href="https://wa.me/905488522207?text=Merhaba%2C%20KıbrısBot%20hizmetleri%20hakkında%20bilgi%20almak%20istiyorum." target="_blank" rel="noopener" class="btn-accent">
+      <a href="https://wa.me/905488522207?text=Merhaba%2C%20KıbrısBot'a%20kaydolmak%20istiyorum.%20İşletmem%20için%20bilgi%20alabilir%20miyim%3F" target="_blank" rel="noopener" class="btn-accent">
         Başvur
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       </a>
@@ -1013,7 +1010,7 @@ details[open] summary.faq-q::after { transform: rotate(45deg); }
         </svg>
         Nasıl çalışır?
       </a>
-      <a href="https://wa.me/905488522207?text=Merhaba%2C%20KıbrısBot%20hizmetleri%20hakkında%20bilgi%20almak%20istiyorum." target="_blank" rel="noopener" class="btn-primary">
+      <a href="https://wa.me/905488522207?text=Merhaba%2C%20KıbrısBot'a%20kaydolmak%20istiyorum.%20İşletmem%20için%20bilgi%20alabilir%20miyim%3F" target="_blank" rel="noopener" class="btn-primary">
         WhatsApp'tan Başvur
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       </a>
@@ -1237,7 +1234,7 @@ details[open] summary.faq-q::after { transform: rotate(45deg); }
         <li>Entegrasyonlar (CRM, e-ticaret)</li>
         <li>Öncelikli destek</li>
       </ul>
-      <a href="https://wa.me/905488522207?text=Merhaba%2C%20KıbrısBot%20hizmetleri%20hakkında%20bilgi%20almak%20istiyorum." target="_blank" rel="noopener" class="pricing-cta">WhatsApp'tan Başvur</a>
+      <a href="https://wa.me/905488522207?text=Merhaba%2C%20KıbrısBot'a%20kaydolmak%20istiyorum.%20İşletmem%20için%20bilgi%20alabilir%20miyim%3F" target="_blank" rel="noopener" class="pricing-cta">WhatsApp'tan Başvur</a>
       <p class="pricing-note">Kurulum 5 dakika · İstediğin zaman iptal</p>
     </div>
   </div>
