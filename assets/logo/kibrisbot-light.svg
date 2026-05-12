@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 110" width="320" height="110">
-  <rect width="320" height="110" fill="#FAF8F5"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -14 320 124" width="320" height="124">
+  <rect y="-14" width="320" height="138" fill="#FAF8F5"/>
   <!-- Icon -->
   <path d="M 14 14 Q 14 6 22 6 L 74 6 Q 82 6 82 14 L 82 68 Q 82 76 74 76 L 56 76 L 44 94 L 40 76 L 22 76 Q 14 76 14 68 Z"
     fill="none" stroke="#1C1917" stroke-width="3.2" stroke-linejoin="round"/>
